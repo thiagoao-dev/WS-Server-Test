@@ -67,7 +67,7 @@ public class UsuarioWS {
         try {
             
             this.conn = this.banco.getConnection();
-            this.sttm = conn.prepareStatement("SELECT * FROM usuarios");
+            this.sttm = conn.prepareStatement("SELECT * FROM usuarios ORDER BY nome ASC");
             this.res = sttm.executeQuery();
             
             while( res.next() ) {
@@ -110,6 +110,8 @@ public class UsuarioWS {
      */
     @WebMethod(operationName = "usuario")
     public Usuarios usuario(@WebParam(name = "idusuario") int idusuario) {
+        
+        if (idusuario <= 0) { return null; }
         
         this.usuario   = new Usuarios();
         this.usuarioPK = new UsuariosPK();
@@ -154,6 +156,8 @@ public class UsuarioWS {
     @WebMethod(operationName = "remove")
     public int remove(@WebParam(name = "idusuario") int idusuario) {
         
+        if (idusuario <= 0) { return 0; }
+        
         try {
             
             this.conn = this.banco.getConnection();
@@ -188,6 +192,8 @@ public class UsuarioWS {
      */
     @WebMethod(operationName = "add")
     public int add(@WebParam(name = "nome") String nome, @WebParam(name = "login") String login, @WebParam(name = "senha") String senha) {
+        
+        if ( nome.trim().equals("") || login.trim().equals("") || senha.trim().equals("") ) { return 0; }
         
         try {
             
@@ -225,6 +231,8 @@ public class UsuarioWS {
      */
     @WebMethod(operationName = "update")
     public int update(@WebParam(name = "idusuario") int idusuario, @WebParam(name = "nome") String nome, @WebParam(name = "senha") String senha) {
+        
+        if (idusuario <= 0 ||  nome.trim().equals("") || senha.trim().equals("") ) { return 0; }
         
         try {
             
